@@ -1,0 +1,41 @@
+# I wrote an article regarding this workflow available at https://joffreylagut.fr/blog/continous-deployment-on-hostinger-using-github-pages
+name: Deploy website to Hostinger
+on:
+  workflow_dispatch: # Allow manual run from Github
+  release: # Run automatically when a new release is published
+    types: [published]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      # Set the same version as your own to ensure your project
+      # builds without issues.
+      node-version: 20
+    steps:
+      - name: 🗂️ Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install and setup Node.js ${{ env.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.node-version }}
+          cache: 'npm'
+
+      - name: 🛠️ Install dependencies
+        run: npm install
+
+      - name: 🛠️ Build application
+        run: npm run build
+
+      - name: Copiar .htaccess
+        run: |
+          if [ -f dist/htaccess ]; then cp dist/htaccess dist/.htaccess; fi
+
+      - name: 📂 Sync files with FTP server
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+        with:
+          server: ${{ secrets.FTP_HOST }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          port: 21 # Change if necessary
+          local-dir: ./dist/ # Change if necessary

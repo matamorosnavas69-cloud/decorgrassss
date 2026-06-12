@@ -1,0 +1,19 @@
+{
+  "tabWidth": 2,
+  "printWidth": 120,
+  "singleQuote": true,
+  "trailingComma": "all",
+  "importOrder": [
+    "(^react(.*))",
+    "<THIRD_PARTY_MODULES>",
+    "antd/(.*)",
+    "^[a-z]|^@reduxjs.*",
+    "^[A-Z]",
+    "(^@mui(.*))|(^@heroicons.*)|(@headlessui.*)|(@mdi.*)",
+    "(^@(?!mui).*)|(^@hooks.*)|(^featureFlags)",
+    "^[./]"
+  ],
+  "importOrderSeparation": true,
+  "importOrderSortSpecifiers": true,
+  "plugins": ["@trivago/prettier-plugin-sort-imports", "prettier-plugin-tailwindcss"]
+}

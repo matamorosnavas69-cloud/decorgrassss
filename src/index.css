@@ -1,0 +1,439 @@
+/* Global styles for DecorGrass Colombia - Material UI Only */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px; /* Base font size for better scaling */
+}
+
+body {
+  font-family:
+    'Inter',
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    'Roboto',
+    'Oxygen',
+    'Ubuntu',
+    'Cantarell',
+    sans-serif;
+  line-height: 1.6;
+  color: #1a1a1a;
+  background-color: #ffffff;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden; /* Prevent horizontal scroll on animations */
+  min-height: 100vh; /* Ensure full height */
+}
+
+/* Improved responsive containers */
+.MuiContainer-root {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 16px;
+  padding-right: 16px;
+  max-width: 100%;
+}
+
+@media (min-width: 600px) {
+  .MuiContainer-root {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+}
+
+@media (min-width: 900px) {
+  .MuiContainer-root {
+    padding-left: 32px;
+    padding-right: 32px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .MuiContainer-root {
+    max-width: 1200px;
+  }
+}
+
+@media (min-width: 1536px) {
+  .MuiContainer-root {
+    max-width: 1536px;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #2e7d32;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #1b5e20;
+}
+
+/* Smooth transitions for interactive elements only */
+button,
+a,
+[role='button'] {
+  transition:
+    transform 0.2s ease-in-out,
+    opacity 0.2s ease-in-out,
+    background-color 0.2s ease-in-out,
+    color 0.2s ease-in-out;
+}
+
+/* Focus styles for accessibility */
+*:focus-visible {
+  outline: 2px solid #2e7d32;
+  outline-offset: 2px;
+}
+
+/* Improved text rendering */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  text-rendering: optimizeLegibility;
+  line-height: 1.2;
+  margin-bottom: 0.5em;
+}
+
+/* Better responsive text scaling */
+@media (max-width: 599px) {
+  h1 {
+    font-size: 2rem;
+  }
+  h2 {
+    font-size: 1.75rem;
+  }
+  h3 {
+    font-size: 1.5rem;
+  }
+  h4 {
+    font-size: 1.25rem;
+  }
+  h5 {
+    font-size: 1.125rem;
+  }
+  h6 {
+    font-size: 1rem;
+  }
+}
+
+/* Loading animations */
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(46, 125, 50, 0.7);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(46, 125, 50, 0);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(46, 125, 50, 0);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInFromLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInFromRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Utility animation classes */
+.fade-in-up {
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.slide-in-left {
+  animation: slideInFromLeft 0.6s ease-out forwards;
+}
+
+.slide-in-right {
+  animation: slideInFromRight 0.6s ease-out forwards;
+}
+
+.pulse-animation {
+  animation: pulse 2s infinite;
+}
+
+/* Parallax smooth effect */
+.parallax-container {
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* Image lazy loading and smooth transitions */
+img {
+  transition:
+    opacity 0.3s ease-in-out,
+    transform 0.3s ease-in-out;
+  max-width: 100%;
+  height: auto;
+}
+
+img:hover {
+  transform: scale(1.02);
+}
+
+/* Improved loading skeleton with better spacing */
+.MuiSkeleton-root {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* Fix skeleton spacing issues */
+.MuiSkeleton-root + .MuiSkeleton-root {
+  margin-top: 0; /* Remove automatic margin */
+}
+
+/* Proper skeleton spacing for different contexts */
+.skeleton-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.skeleton-container .MuiSkeleton-root {
+  margin: 0; /* Ensure no unwanted margins */
+}
+
+/* Improved grid layouts with better responsive behavior */
+.responsive-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  align-items: stretch;
+  justify-content: center;
+  width: 100%;
+  max-width: 100%;
+}
+
+@media (min-width: 600px) {
+  .responsive-grid {
+    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  }
+}
+
+@media (min-width: 900px) {
+  .responsive-grid {
+    gap: 2rem;
+    grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+  }
+}
+
+@media (min-width: 1200px) {
+  .responsive-grid {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+}
+
+/* Prevent flicker on component mount */
+.MuiContainer-root,
+.MuiBox-root,
+.MuiCard-root {
+  transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+/* Better spacing for form elements */
+.MuiTextField-root {
+  margin-bottom: 0; /* Remove default margin */
+}
+
+.MuiGrid-item .MuiTextField-root {
+  margin-bottom: 0;
+}
+
+/* Improved button spacing */
+.MuiButton-root {
+  min-height: 42px;
+}
+
+@media (min-width: 600px) {
+  .MuiButton-root {
+    min-height: 48px;
+  }
+}
+
+/* Better card spacing and consistent styling */
+.MuiCard-root {
+  margin-bottom: 0; /* Remove default margin to prevent layout issues */
+}
+
+.MuiCardContent-root:last-child {
+  padding-bottom: 1rem !important;
+}
+
+@media (min-width: 600px) {
+  .MuiCardContent-root:last-child {
+    padding-bottom: 1.5rem !important;
+  }
+}
+
+/* Grid container improvements */
+.MuiGrid-container {
+  margin: 0 !important; /* Prevent negative margins causing layout issues */
+  width: 100% !important;
+}
+
+.MuiGrid-item {
+  padding: 0 !important; /* Remove default padding to use custom spacing */
+}
+
+/* Center content properly */
+.center-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+/* Improved responsive image grid */
+.image-grid {
+  display: grid;
+  gap: 1rem;
+  justify-items: center;
+  align-items: start;
+  width: 100%;
+}
+
+@media (min-width: 600px) {
+  .image-grid {
+    gap: 1.5rem;
+  }
+}
+
+@media (min-width: 900px) {
+  .image-grid {
+    gap: 2rem;
+  }
+}
+
+/* Project cards grid */
+.project-grid {
+  display: grid;
+  gap: 1.5rem;
+  justify-items: center;
+  align-items: start;
+  width: 100%;
+}
+
+@media (min-width: 600px) {
+  .project-grid {
+    gap: 2rem;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  button,
+  a,
+  [role='button'] {
+    transition: none !important;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
+
+  button,
+  a,
+  [role='button'] {
+    transition: none !important;
+  }
+}
+
+/* Print styles */
+@media print {
+  * {
+    background: transparent !important;
+    color: black !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+
+  a,
+  a:visited {
+    text-decoration: underline;
+  }
+
+  img {
+    max-width: 100% !important;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+}
