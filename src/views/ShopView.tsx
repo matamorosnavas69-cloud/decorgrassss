@@ -26,8 +26,24 @@ import { useState, useEffect } from 'react';
 import { useCart } from '../contexts/CartContext';
 import { CtaSection } from '../components/common/CtaSection';
 import { useWhatsApp } from '../hooks/useWhatsApp';
+import curlyMuestras from '../assets/images/products/curly/curly-muestras-colores.jpeg';
+import curlyDecorativa from '../assets/images/products/curly/curly-decorativa-interior.jpeg';
+import curlyParque1 from '../assets/images/products/curly/curly-parque-infantil-1.jpeg';
+import curlyParque2 from '../assets/images/products/curly/curly-parque-infantil-2.jpeg';
+import curlyParqueAzul from '../assets/images/products/curly/curly-parque-azul.jpeg';
 
-const products = [
+type Product = {
+  id: string;
+  name: string;
+  price: number;
+  image: string;
+  gallery?: string[];
+  description: string;
+  color: string;
+  density: string;
+};
+
+const products: Product[] = [
   {
     id: 'premium-green',
     name: 'Grama Premium Verde',
@@ -65,12 +81,14 @@ const products = [
     density: 'Media-Alta',
   },
   {
-    id: 'dual-tone',
-    name: 'Grama Bi-Color',
+    id: 'curly',
+    name: 'Grama Curly',
     price: 50000,
-    image: 'https://images.unsplash.com/photo-1568602471122-7832951cc4c5?w=500&h=500&fit=crop',
-    description: 'Diseño bi-color que simula grama natural. Aspecto más realista y natural.',
-    color: 'Bi-Color',
+    image: curlyMuestras,
+    gallery: [curlyMuestras, curlyDecorativa, curlyParque1, curlyParque2, curlyParqueAzul],
+    description:
+      'Grama sintética rizada (curly) multicolor: disponible en verde, amarillo, morado, blanco, naranja y más. Ideal para parques infantiles, zonas recreativas y espacios decorativos.',
+    color: 'Multicolor',
     density: 'Alta',
   },
   {
@@ -83,6 +101,158 @@ const products = [
     density: 'Media-Alta',
   },
 ];
+
+const ProductCard = ({
+  product,
+  index,
+  squareMeters,
+  onAddToCart,
+}: {
+  product: Product;
+  index: number;
+  squareMeters: number | '';
+  onAddToCart: (product: Product) => void;
+}) => {
+  const [activeImage, setActiveImage] = useState(product.image);
+  const meters = typeof squareMeters === 'number' ? squareMeters : 0;
+
+  return (
+    <Box>
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: index * 0.1 }}
+        viewport={{ once: true }}
+      >
+        <Card
+          sx={{
+            height: '100%',
+            minHeight: 550,
+            display: 'flex',
+            flexDirection: 'column',
+            borderRadius: 3,
+            overflow: 'hidden',
+            transition: 'all 0.3s ease-in-out',
+            '&:hover': {
+              transform: 'translateY(-8px)',
+              boxShadow: '0 20px 40px rgba(0,0,0,0.1)',
+            },
+          }}
+        >
+          <Box sx={{ position: 'relative', overflow: 'hidden', paddingTop: '100%' }}>
+            <CardMedia
+              component="img"
+              image={activeImage}
+              alt={product.name}
+              sx={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+                transition: 'transform 0.3s ease-in-out',
+                '&:hover': {
+                  transform: 'scale(1.05)',
+                },
+              }}
+            />
+          </Box>
+
+          {product.gallery && product.gallery.length > 1 && (
+            <Stack direction="row" spacing={1} sx={{ px: 2, pt: 2, flexWrap: 'wrap', gap: 1 }}>
+              {product.gallery.map((img, i) => (
+                <Box
+                  key={i}
+                  component="img"
+                  src={img}
+                  alt={`${product.name} ${i + 1}`}
+                  onClick={() => setActiveImage(img)}
+                  sx={{
+                    width: 48,
+                    height: 48,
+                    objectFit: 'cover',
+                    borderRadius: 1,
+                    cursor: 'pointer',
+                    border: '2px solid',
+                    borderColor: activeImage === img ? 'primary.main' : 'transparent',
+                    opacity: activeImage === img ? 1 : 0.65,
+                    transition: 'all 0.2s ease-in-out',
+                    '&:hover': { opacity: 1 },
+                  }}
+                />
+              ))}
+            </Stack>
+          )}
+
+          <CardContent sx={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+            <Stack direction="row" spacing={1} sx={{ mb: 1 }}>
+              <Chip label={product.color} size="small" variant="outlined" />
+              <Chip label={product.density} size="small" color="primary" />
+            </Stack>
+
+            <Typography variant="h6" sx={{ fontWeight: 700, mb: 1, color: 'text.primary' }}>
+              {product.name}
+            </Typography>
+
+            <Typography variant="body2" color="text.secondary" sx={{ mb: 2, flex: 1, lineHeight: 1.5 }}>
+              {product.description}
+            </Typography>
+
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, mt: 'auto' }}>
+              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
+                <Box>
+                  <Typography variant="caption" color="text.secondary">
+                    Precio por m²:
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    sx={{
+                      fontWeight: 600,
+                      color: 'text.secondary',
+                    }}
+                  >
+                    ${product.price.toLocaleString('es-CO')}
+                  </Typography>
+                </Box>
+                <Box sx={{ textAlign: 'right' }}>
+                  <Typography variant="caption" color="text.secondary">
+                    Total ({meters}m²):
+                  </Typography>
+                  <Typography
+                    variant="h5"
+                    sx={{
+                      fontWeight: 800,
+                      color: 'primary.main',
+                    }}
+                  >
+                    ${(product.price * meters).toLocaleString('es-CO')}
+                  </Typography>
+                </Box>
+              </Box>
+              <Button
+                variant="contained"
+                fullWidth
+                startIcon={<CartIcon />}
+                onClick={() => onAddToCart(product)}
+                sx={{
+                  background: 'linear-gradient(135deg, #2E7D32 0%, #4CAF50 100%)',
+                  textTransform: 'none',
+                  fontWeight: 600,
+                  '&:hover': {
+                    background: 'linear-gradient(135deg, #1b5e20 0%, #2e7d32 100%)',
+                  },
+                }}
+              >
+                Añadir
+              </Button>
+            </Box>
+          </CardContent>
+        </Card>
+      </motion.div>
+    </Box>
+  );
+};
 
 const ShopView = () => {
   const { t } = useTranslation();
@@ -463,118 +633,13 @@ const ShopView = () => {
         {/* Products Grid */}
         <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)' }, gap: 3 }}>
           {filteredProducts.map((product, index) => (
-            <Box key={product.id}>
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                viewport={{ once: true }}
-              >
-                <Card
-                  sx={{
-                    height: '100%',
-                    minHeight: 550,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    borderRadius: 3,
-                    overflow: 'hidden',
-                    transition: 'all 0.3s ease-in-out',
-                    '&:hover': {
-                      transform: 'translateY(-8px)',
-                      boxShadow: '0 20px 40px rgba(0,0,0,0.1)',
-                    },
-                  }}
-                >
-                  <Box sx={{ position: 'relative', overflow: 'hidden', paddingTop: '100%' }}>
-                    <CardMedia
-                      component="img"
-                      image={product.image}
-                      alt={product.name}
-                      sx={{
-                        position: 'absolute',
-                        top: 0,
-                        left: 0,
-                        width: '100%',
-                        height: '100%',
-                        objectFit: 'cover',
-                        transition: 'transform 0.3s ease-in-out',
-                        '&:hover': {
-                          transform: 'scale(1.05)',
-                        },
-                      }}
-                    />
-                  </Box>
-
-                  <CardContent sx={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-                    <Stack direction="row" spacing={1} sx={{ mb: 1 }}>
-                      <Chip label={product.color} size="small" variant="outlined" />
-                      <Chip label={product.density} size="small" color="primary" />
-                    </Stack>
-
-                    <Typography variant="h6" sx={{ fontWeight: 700, mb: 1, color: 'text.primary' }}>
-                      {product.name}
-                    </Typography>
-
-                    <Typography
-                      variant="body2"
-                      color="text.secondary"
-                      sx={{ mb: 2, flex: 1, lineHeight: 1.5 }}
-                    >
-                      {product.description}
-                    </Typography>
-
-                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, mt: 'auto' }}>
-                      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
-                        <Box>
-                          <Typography variant="caption" color="text.secondary">
-                            Precio por m²:
-                          </Typography>
-                          <Typography
-                            variant="body2"
-                            sx={{
-                              fontWeight: 600,
-                              color: 'text.secondary',
-                            }}
-                          >
-                            ${product.price.toLocaleString('es-CO')}
-                          </Typography>
-                        </Box>
-                        <Box sx={{ textAlign: 'right' }}>
-                          <Typography variant="caption" color="text.secondary">
-                            Total ({squareMeters}m²):
-                          </Typography>
-                          <Typography
-                            variant="h5"
-                            sx={{
-                              fontWeight: 800,
-                              color: 'primary.main',
-                            }}
-                          >
-                            ${(product.price * squareMeters).toLocaleString('es-CO')}
-                          </Typography>
-                        </Box>
-                      </Box>
-                      <Button
-                        variant="contained"
-                        fullWidth
-                        startIcon={<CartIcon />}
-                        onClick={() => handleAddToCart(product)}
-                        sx={{
-                          background: 'linear-gradient(135deg, #2E7D32 0%, #4CAF50 100%)',
-                          textTransform: 'none',
-                          fontWeight: 600,
-                          '&:hover': {
-                            background: 'linear-gradient(135deg, #1b5e20 0%, #2e7d32 100%)',
-                          },
-                        }}
-                      >
-                        Añadir
-                      </Button>
-                    </Box>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            </Box>
+            <ProductCard
+              key={product.id}
+              product={product}
+              index={index}
+              squareMeters={squareMeters}
+              onAddToCart={handleAddToCart}
+            />
           ))}
         </Box>
 
