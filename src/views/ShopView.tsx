@@ -141,14 +141,47 @@ const ProductCard = ({
           )}
 
           <CardContent sx={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-            <Stack direction="row" spacing={1} sx={{ mb: 1 }}>
-              <Chip label={product.color} size="small" variant="outlined" />
-              <Chip label={product.density} size="small" color="primary" />
-            </Stack>
-
             <Typography variant="h6" sx={{ fontWeight: 700, mb: 1, color: 'text.primary' }}>
               {product.name}
             </Typography>
+
+            {/* Altura */}
+            <Box sx={{ mb: 2 }}>
+              <Typography variant="caption" sx={{ fontWeight: 600, color: 'text.secondary', display: 'block', mb: 0.5 }}>
+                Altura:
+              </Typography>
+              <Stack direction="row" spacing={0.5} sx={{ flexWrap: 'wrap', gap: 0.5 }}>
+                {product.availableHeights.map((h) => (
+                  <Chip
+                    key={h}
+                    label={h}
+                    size="small"
+                    onClick={() => setProductVariants({ ...productVariants, [product.id]: { ...productVariants[product.id] || { height: h, color: product.availableColors[0] }, height: h } })}
+                    color={productVariants[product.id]?.height === h ? 'primary' : 'default'}
+                    variant={productVariants[product.id]?.height === h ? 'filled' : 'outlined'}
+                  />
+                ))}
+              </Stack>
+            </Box>
+
+            {/* Color */}
+            <Box sx={{ mb: 2 }}>
+              <Typography variant="caption" sx={{ fontWeight: 600, color: 'text.secondary', display: 'block', mb: 0.5 }}>
+                Color:
+              </Typography>
+              <Stack direction="row" spacing={0.5} sx={{ flexWrap: 'wrap', gap: 0.5 }}>
+                {product.availableColors.map((c) => (
+                  <Chip
+                    key={c}
+                    label={c}
+                    size="small"
+                    onClick={() => setProductVariants({ ...productVariants, [product.id]: { ...productVariants[product.id] || { height: product.availableHeights[0], color: c }, color: c } })}
+                    color={productVariants[product.id]?.color === c ? 'primary' : 'default'}
+                    variant={productVariants[product.id]?.color === c ? 'filled' : 'outlined'}
+                  />
+                ))}
+              </Stack>
+            </Box>
 
             <Typography variant="body2" color="text.secondary" sx={{ mb: 2, flex: 1, lineHeight: 1.5 }}>
               {product.description}
@@ -577,26 +610,43 @@ const ShopView = () => {
             px: { xs: 2, sm: 3, md: 4 },
           }}
         >
-          <Typography variant="subtitle1" sx={{ fontWeight: 700, mb: 2, color: 'text.primary' }}>
+          <Typography variant="subtitle1" sx={{ fontWeight: 700, mb: 3, color: 'text.primary' }}>
             Filtrar por tipo de grama:
           </Typography>
-          <Stack direction="row" spacing={1} sx={{ flexWrap: 'wrap', gap: 1 }}>
+
+          {/* Todos */}
+          <Box sx={{ mb: 2 }}>
             <Chip
-              label="Todos"
+              label="Todos los productos"
               onClick={() => setSelectedType(null)}
               color={selectedType === null ? 'primary' : 'default'}
               variant={selectedType === null ? 'filled' : 'outlined'}
             />
-            {productTypes.map((type) => (
-              <Chip
-                key={type.id}
-                label={`${type.icon} ${type.label}`}
-                onClick={() => setSelectedType(type.id)}
-                color={selectedType === type.id ? 'primary' : 'default'}
-                variant={selectedType === type.id ? 'filled' : 'outlined'}
-              />
-            ))}
-          </Stack>
+          </Box>
+
+          {/* Por categoría */}
+          {productCategories.map((category) => {
+            const typesInCategory = productTypes.filter((t) => t.category === category.id);
+            return (
+              <Box key={category.id} sx={{ mb: 3 }}>
+                <Typography variant="subtitle2" sx={{ fontWeight: 700, mb: 1, fontSize: '0.95rem', color: 'text.primary' }}>
+                  {category.label}
+                </Typography>
+                <Stack direction="row" spacing={1} sx={{ flexWrap: 'wrap', gap: 1, pl: 2 }}>
+                  {typesInCategory.map((type) => (
+                    <Chip
+                      key={type.id}
+                      label={type.label}
+                      onClick={() => setSelectedType(type.id)}
+                      color={selectedType === type.id ? 'primary' : 'default'}
+                      variant={selectedType === type.id ? 'filled' : 'outlined'}
+                      size="small"
+                    />
+                  ))}
+                </Stack>
+              </Box>
+            );
+          })}
         </Container>
       </motion.div>
 
@@ -778,14 +828,33 @@ const ShopView = () => {
 
               {/* Product Details */}
               <Box sx={{ mb: 3 }}>
-                <Stack direction="row" spacing={1} sx={{ mb: 2 }}>
-                  <Chip label={selectedProduct.color} variant="outlined" />
-                  <Chip label={selectedProduct.density} color="primary" />
-                </Stack>
-
                 <Typography variant="body1" color="text.secondary" sx={{ mb: 2, lineHeight: 1.8 }}>
                   {selectedProduct.description}
                 </Typography>
+
+                <Box sx={{ mb: 2 }}>
+                  <Typography variant="subtitle2" sx={{ fontWeight: 700, mb: 1, color: 'text.primary' }}>
+                    Uso:
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    {selectedProduct.usage}
+                  </Typography>
+                </Box>
+
+                <Box sx={{ p: 2, backgroundColor: 'rgba(46, 125, 50, 0.1)', borderRadius: 1, mb: 2 }}>
+                  <Typography variant="subtitle2" sx={{ fontWeight: 700, color: 'primary.main', mb: 1 }}>
+                    ✓ Garantía: {selectedProduct.warranty}
+                  </Typography>
+                </Box>
+
+                <Box sx={{ mb: 2 }}>
+                  <Typography variant="subtitle2" sx={{ fontWeight: 700, mb: 1, color: 'text.primary' }}>
+                    Altura disponible: {selectedProduct.availableHeights.join(', ')}
+                  </Typography>
+                  <Typography variant="subtitle2" sx={{ fontWeight: 700, mb: 1, color: 'text.primary' }}>
+                    Colores disponibles: {selectedProduct.availableColors.join(', ')}
+                  </Typography>
+                </Box>
 
                 <Box sx={{ p: 2, backgroundColor: 'rgba(46, 125, 50, 0.1)', borderRadius: 1, mb: 2 }}>
                   <Typography variant="h6" sx={{ fontWeight: 700, color: 'primary.main', mb: 1 }}>
