@@ -117,8 +117,7 @@ const ProductCard = ({
       >
         <Card
           sx={{
-            height: '100%',
-            minHeight: 550,
+            height: 600,
             display: 'flex',
             flexDirection: 'column',
             borderRadius: 3,
