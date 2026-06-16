@@ -42,7 +42,7 @@ import tapicesped1 from '../../public/productos/grama tapicesped/grama tapicespe
 import tennis1 from '../../public/productos/grama tennis/gramatenis (1).jpeg';
 
 // Bandeja para Perros
-import bandejaTapicesped from '../../public/productos/grama tapicesped/grama tapicesped (1).jpeg';
+import bandejaPerros from '../../public/productos/bandeja para perros/918b4fa3-509c-4021-89b9-f3f0b3a39812.png';
 
 type Product = {
   id: string;
@@ -98,7 +98,7 @@ const products: Product[] = [
     id: 'bandeja-perros',
     name: 'Bandeja de Grama para Perros',
     price: 35000,
-    image: bandejaTapicesped,
+    image: bandejaPerros,
     description: 'Bandeja de grama sintética con base de PVC plástico. Sistema completo para sanitarios de mascotas. Fácil de limpiar, higiénica y duradera. Ideal para perros en departamentos o casas.',
     color: 'Verde Natural',
     density: 'Media',
