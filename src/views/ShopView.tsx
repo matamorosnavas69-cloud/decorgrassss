@@ -41,6 +41,9 @@ import tapicesped1 from '../../public/productos/grama tapicesped/grama tapicespe
 // Tennis
 import tennis1 from '../../public/productos/grama tennis/gramatenis (1).jpeg';
 
+// Bandeja para Perros
+import bandejaTapicesped from '../../public/productos/grama tapicesped/grama tapicesped (1).jpeg';
+
 type Product = {
   id: string;
   name: string;
@@ -90,6 +93,15 @@ const products: Product[] = [
       'Grama sintética rizada (curly) multicolor: disponible en verde, amarillo, morado, blanco, naranja y más. Ideal para parques infantiles, zonas recreativas y espacios decorativos.',
     color: 'Multicolor',
     density: 'Alta',
+  },
+  {
+    id: 'bandeja-perros',
+    name: 'Bandeja de Grama para Perros',
+    price: 35000,
+    image: bandejaTapicesped,
+    description: 'Bandeja de grama sintética con base de PVC plástico. Sistema completo para sanitarios de mascotas. Fácil de limpiar, higiénica y duradera. Ideal para perros en departamentos o casas.',
+    color: 'Verde Natural',
+    density: 'Media',
   },
 ];
 
