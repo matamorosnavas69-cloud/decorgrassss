@@ -32,6 +32,15 @@ import curlyParque1 from '../assets/images/products/curly/curly-parque-infantil-
 import curlyParque2 from '../assets/images/products/curly/curly-parque-infantil-2.jpeg';
 import curlyParqueAzul from '../assets/images/products/curly/curly-parque-azul.jpeg';
 
+// Paisajismo
+import paisajismo1 from '../../public/productos/grama paisajismo/WhatsApp Image 2026-06-12 at 8.23.37 AM (1).jpeg';
+
+// Tapicésped
+import tapicesped1 from '../../public/productos/grama tapicesped/grama tapicesped (1).jpeg';
+
+// Tennis
+import tennis1 from '../../public/productos/grama tennis/gramatenis (1).jpeg';
+
 type Product = {
   id: string;
   name: string;
@@ -45,40 +54,31 @@ type Product = {
 
 const products: Product[] = [
   {
-    id: 'premium-green',
-    name: 'Grama Premium Verde',
-    price: 45000,
-    image: 'https://images.unsplash.com/photo-1595855707802-21b258e4e06b?w=500&h=500&fit=crop',
-    description: 'Grama sintética premium en color verde intenso. Ideal para espacios residenciales y deportivos.',
-    color: 'Verde',
+    id: 'paisajismo',
+    name: 'Grama Paisajismo',
+    price: 52000,
+    image: paisajismo1,
+    description: 'Grama premium para proyectos de paisajismo. Diseñada para crear espacios verdes de alto impacto visual con acabado natural y duradero.',
+    color: 'Verde Natural',
     density: 'Alta',
   },
   {
-    id: 'sport-green',
-    name: 'Grama Deportiva',
-    price: 65000,
-    image: 'https://images.unsplash.com/photo-1575610212569-a674ab45aa50?w=500&h=500&fit=crop',
-    description: 'Grama de alta resistencia para campos deportivos. Mayor durabilidad y resistencia al desgaste.',
-    color: 'Verde Oscuro',
-    density: 'Muy Alta',
-  },
-  {
-    id: 'light-green',
-    name: 'Grama Verde Claro',
-    price: 38000,
-    image: 'https://images.unsplash.com/photo-1594909122845-11bedd892207?w=500&h=500&fit=crop',
-    description: 'Grama sintética en color verde claro. Perfecta para patios y terrazas residenciales.',
+    id: 'tapicesped',
+    name: 'Grama Tapicésped',
+    price: 42000,
+    image: tapicesped1,
+    description: 'Grama versátil para tapicería de espacios. Perfecta para crear alfombras verdes en interiores y exteriores con acabado uniforme y elegante.',
     color: 'Verde Claro',
-    density: 'Media',
+    density: 'Media-Alta',
   },
   {
-    id: 'ultra-soft',
-    name: 'Grama Ultra Suave',
-    price: 55000,
-    image: 'https://images.unsplash.com/photo-1581978949785-d5be55e6f2c3?w=500&h=500&fit=crop',
-    description: 'Textura ultra suave para máxima comodidad. Ideal para áreas infantiles y piscinas.',
-    color: 'Verde Medio',
-    density: 'Media-Alta',
+    id: 'tennis',
+    name: 'Grama Tennis',
+    price: 68000,
+    image: tennis1,
+    description: 'Grama especializada para canchas de tenis. Construida con materiales de alto rendimiento para máxima tracción, resistencia y durabilidad.',
+    color: 'Verde Deportivo',
+    density: 'Muy Alta',
   },
   {
     id: 'curly',
@@ -90,15 +90,6 @@ const products: Product[] = [
       'Grama sintética rizada (curly) multicolor: disponible en verde, amarillo, morado, blanco, naranja y más. Ideal para parques infantiles, zonas recreativas y espacios decorativos.',
     color: 'Multicolor',
     density: 'Alta',
-  },
-  {
-    id: 'eco-green',
-    name: 'Grama Eco-Friendly',
-    price: 48000,
-    image: 'https://images.unsplash.com/photo-1559828481-a0ae8102e924?w=500&h=500&fit=crop',
-    description: 'Grama eco-amigable con materiales sostenibles. Perfecta para proyectos verdes.',
-    color: 'Verde Natural',
-    density: 'Media-Alta',
   },
 ];
 
