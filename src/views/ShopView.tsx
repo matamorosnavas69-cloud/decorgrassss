@@ -568,6 +568,38 @@ const ShopView = () => {
         </Container>
       </motion.div>
 
+      {/* Product Type Filter */}
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+        <Container
+          maxWidth="xl"
+          sx={{
+            py: { xs: 3, md: 4 },
+            px: { xs: 2, sm: 3, md: 4 },
+          }}
+        >
+          <Typography variant="subtitle1" sx={{ fontWeight: 700, mb: 2, color: 'text.primary' }}>
+            Filtrar por tipo de grama:
+          </Typography>
+          <Stack direction="row" spacing={1} sx={{ flexWrap: 'wrap', gap: 1 }}>
+            <Chip
+              label="Todos"
+              onClick={() => setSelectedType(null)}
+              color={selectedType === null ? 'primary' : 'default'}
+              variant={selectedType === null ? 'filled' : 'outlined'}
+            />
+            {productTypes.map((type) => (
+              <Chip
+                key={type.id}
+                label={`${type.icon} ${type.label}`}
+                onClick={() => setSelectedType(type.id)}
+                color={selectedType === type.id ? 'primary' : 'default'}
+                variant={selectedType === type.id ? 'filled' : 'outlined'}
+              />
+            ))}
+          </Stack>
+        </Container>
+      </motion.div>
+
       {/* Filters and Search */}
       <Container
         maxWidth="xl"
