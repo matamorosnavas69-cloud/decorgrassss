@@ -20,7 +20,12 @@ import {
   MenuItem,
   FormControl,
   InputLabel,
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  IconButton,
 } from '@mui/material';
+import { Close as CloseIcon } from '@mui/icons-material';
 import { useState, useEffect } from 'react';
 
 import { useCart } from '../contexts/CartContext';
@@ -112,11 +117,13 @@ const ProductCard = ({
   index,
   squareMeters,
   onAddToCart,
+  onProductClick,
 }: {
   product: Product;
   index: number;
   squareMeters: number | '';
   onAddToCart: (product: Product) => void;
+  onProductClick: (product: Product) => void;
 }) => {
   const [activeImage, setActiveImage] = useState(product.image);
   const meters = typeof squareMeters === 'number' ? squareMeters : 0;
@@ -130,6 +137,7 @@ const ProductCard = ({
         viewport={{ once: true }}
       >
         <Card
+          onClick={() => onProductClick(product)}
           sx={{
             height: 600,
             display: 'flex',
@@ -137,6 +145,7 @@ const ProductCard = ({
             borderRadius: 3,
             overflow: 'hidden',
             transition: 'all 0.3s ease-in-out',
+            cursor: 'pointer',
             '&:hover': {
               transform: 'translateY(-8px)',
               boxShadow: '0 20px 40px rgba(0,0,0,0.1)',
@@ -273,6 +282,8 @@ const ShopView = () => {
   const [shapeType, setShapeType] = useState<'square' | 'rectangular' | 'irregular'>('square');
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [selectedProduct, setSelectedProduct] = useState<(typeof products)[0] | null>(null);
+  const [activeGalleryImage, setActiveGalleryImage] = useState(0);
 
   const MAX_SQUARE_METERS = 150;
 
@@ -338,6 +349,18 @@ const ShopView = () => {
   const handleViewCart = () => {
     navigate('/cart');
   };
+
+  const handleProductClick = (product: (typeof products)[0]) => {
+    setSelectedProduct(product);
+    setActiveGalleryImage(0);
+  };
+
+  const handleCloseModal = () => {
+    setSelectedProduct(null);
+    setActiveGalleryImage(0);
+  };
+
+  const productImages = selectedProduct?.gallery || [selectedProduct?.image];
 
   return (
     <Box sx={{ pt: { xs: 6, md: 8 } }}>
@@ -643,6 +666,7 @@ const ShopView = () => {
               index={index}
               squareMeters={squareMeters}
               onAddToCart={handleAddToCart}
+              onProductClick={handleProductClick}
             />
           ))}
         </Box>
@@ -712,6 +736,105 @@ const ShopView = () => {
           }}
         />
       )}
+
+      {/* Product Detail Modal */}
+      <Dialog open={!!selectedProduct} onClose={handleCloseModal} maxWidth="md" fullWidth>
+        {selectedProduct && (
+          <>
+            <DialogTitle sx={{ fontWeight: 700, fontSize: '1.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              {selectedProduct.name}
+              <IconButton onClick={handleCloseModal} size="small">
+                <CloseIcon />
+              </IconButton>
+            </DialogTitle>
+            <DialogContent sx={{ pt: 2 }}>
+              <Box sx={{ mb: 3 }}>
+                {/* Main Image */}
+                <Box
+                  component="img"
+                  src={productImages?.[activeGalleryImage]}
+                  alt={selectedProduct.name}
+                  sx={{
+                    width: '100%',
+                    height: 'auto',
+                    maxHeight: 400,
+                    objectFit: 'cover',
+                    borderRadius: 2,
+                    mb: 2,
+                  }}
+                />
+
+                {/* Gallery Thumbnails */}
+                {productImages && productImages.length > 1 && (
+                  <Stack direction="row" spacing={1} sx={{ justifyContent: 'center', flexWrap: 'wrap', gap: 1 }}>
+                    {productImages.map((img, i) => (
+                      <Box
+                        key={i}
+                        component="img"
+                        src={img}
+                        alt={`${selectedProduct.name} ${i + 1}`}
+                        onClick={() => setActiveGalleryImage(i)}
+                        sx={{
+                          width: 80,
+                          height: 80,
+                          objectFit: 'cover',
+                          borderRadius: 1,
+                          cursor: 'pointer',
+                          border: '2px solid',
+                          borderColor: activeGalleryImage === i ? 'primary.main' : 'transparent',
+                          opacity: activeGalleryImage === i ? 1 : 0.6,
+                          transition: 'all 0.2s',
+                          '&:hover': { opacity: 1 },
+                        }}
+                      />
+                    ))}
+                  </Stack>
+                )}
+              </Box>
+
+              {/* Product Details */}
+              <Box sx={{ mb: 3 }}>
+                <Stack direction="row" spacing={1} sx={{ mb: 2 }}>
+                  <Chip label={selectedProduct.color} variant="outlined" />
+                  <Chip label={selectedProduct.density} color="primary" />
+                </Stack>
+
+                <Typography variant="body1" color="text.secondary" sx={{ mb: 2, lineHeight: 1.8 }}>
+                  {selectedProduct.description}
+                </Typography>
+
+                <Box sx={{ p: 2, backgroundColor: 'rgba(46, 125, 50, 0.1)', borderRadius: 1, mb: 2 }}>
+                  <Typography variant="h6" sx={{ fontWeight: 700, color: 'primary.main', mb: 1 }}>
+                    ${selectedProduct.price.toLocaleString('es-CO')} por m²
+                  </Typography>
+                  {typeof squareMeters === 'number' && squareMeters > 0 && (
+                    <Typography variant="body2" color="text.secondary">
+                      Total para {squareMeters}m²: <strong>${(selectedProduct.price * squareMeters).toLocaleString('es-CO')}</strong>
+                    </Typography>
+                  )}
+                </Box>
+
+                <Button
+                  variant="contained"
+                  fullWidth
+                  size="large"
+                  onClick={() => {
+                    handleAddToCart(selectedProduct);
+                    handleCloseModal();
+                  }}
+                  sx={{
+                    background: 'linear-gradient(135deg, #2E7D32 0%, #4CAF50 100%)',
+                    textTransform: 'none',
+                    fontWeight: 700,
+                  }}
+                >
+                  Añadir al Carrito
+                </Button>
+              </Box>
+            </DialogContent>
+          </>
+        )}
+      </Dialog>
     </Box>
   );
 };
