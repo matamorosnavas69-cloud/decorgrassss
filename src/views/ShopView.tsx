@@ -31,6 +31,7 @@ import { useState, useEffect } from 'react';
 import { useCart } from '../contexts/CartContext';
 import { CtaSection } from '../components/common/CtaSection';
 import { useWhatsApp } from '../hooks/useWhatsApp';
+import { productsData, productTypes, Product } from '../data/productsData';
 import curlyMuestras from '../assets/images/products/curly/curly-muestras-colores.jpeg';
 import curlyDecorativa from '../assets/images/products/curly/curly-decorativa-interior.jpeg';
 import curlyParque1 from '../assets/images/products/curly/curly-parque-infantil-1.jpeg';
@@ -50,67 +51,8 @@ import tennis1 from '../../public/productos/grama tennis/gramatenis (1).jpeg';
 import bandejaPerros1 from '../../public/productos/bandeja para perros/918b4fa3-509c-4021-89b9-f3f0b3a39812.png';
 import bandejaPerros2 from '../../public/productos/bandeja para perros/c0a98667-3822-47ac-8b0e-b32226fcc64a.png';
 
-type Product = {
-  id: string;
-  name: string;
-  price: number;
-  image: string;
-  gallery?: string[];
-  description: string;
-  color: string;
-  density: string;
-};
-
-const products: Product[] = [
-  {
-    id: 'paisajismo',
-    name: 'Grama Paisajismo',
-    price: 52000,
-    image: paisajismo1,
-    description: 'Grama premium para proyectos de paisajismo. Diseñada para crear espacios verdes de alto impacto visual con acabado natural y duradero.',
-    color: 'Verde Natural',
-    density: 'Alta',
-  },
-  {
-    id: 'tapicesped',
-    name: 'Grama Tapicésped',
-    price: 42000,
-    image: tapicesped1,
-    description: 'Grama versátil para tapicería de espacios. Perfecta para crear alfombras verdes en interiores y exteriores con acabado uniforme y elegante.',
-    color: 'Verde Claro',
-    density: 'Media-Alta',
-  },
-  {
-    id: 'tennis',
-    name: 'Grama Tennis',
-    price: 68000,
-    image: tennis1,
-    description: 'Grama especializada para canchas de tenis. Construida con materiales de alto rendimiento para máxima tracción, resistencia y durabilidad.',
-    color: 'Verde Deportivo',
-    density: 'Muy Alta',
-  },
-  {
-    id: 'curly',
-    name: 'Grama Curly',
-    price: 50000,
-    image: curlyMuestras,
-    gallery: [curlyMuestras, curlyDecorativa, curlyParque1, curlyParque2, curlyParqueAzul],
-    description:
-      'Grama sintética rizada (curly) multicolor: disponible en verde, amarillo, morado, blanco, naranja y más. Ideal para parques infantiles, zonas recreativas y espacios decorativos.',
-    color: 'Multicolor',
-    density: 'Alta',
-  },
-  {
-    id: 'bandeja-perros',
-    name: 'Bandeja de Grama para Perros',
-    price: 35000,
-    image: bandejaPerros1,
-    gallery: [bandejaPerros1, bandejaPerros2],
-    description: 'Bandeja de grama sintética con base de PVC plástico. Sistema completo para sanitarios de mascotas. Fácil de limpiar, higiénica y duradera. Ideal para perros en departamentos o casas.',
-    color: 'Verde Natural',
-    density: 'Media',
-  },
-];
+// Se usa el tipo Product importado de productsData
+const products: Product[] = productsData;
 
 const ProductCard = ({
   product,
@@ -284,6 +226,8 @@ const ShopView = () => {
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [selectedProduct, setSelectedProduct] = useState<(typeof products)[0] | null>(null);
   const [activeGalleryImage, setActiveGalleryImage] = useState(0);
+  const [selectedType, setSelectedType] = useState<string | null>(null);
+  const [productVariants, setProductVariants] = useState<Record<string, { height: string; color: string }>>({});
 
   const MAX_SQUARE_METERS = 150;
 
@@ -296,16 +240,24 @@ const ShopView = () => {
   };
 
   useEffect(() => {
-    setFilteredProducts([...products].sort((a, b) => a.name.localeCompare(b.name)));
-  }, []);
+    const filtered = selectedType
+      ? products.filter((p) => p.type === selectedType)
+      : products;
+    setFilteredProducts([...filtered].sort((a, b) => a.name.localeCompare(b.name)));
+  }, [selectedType]);
 
   const handleSearch = (value: string) => {
     setSearch(value);
-    const filtered = products.filter(
+    let filtered = products.filter(
       (product) =>
         product.name.toLowerCase().includes(value.toLowerCase()) ||
         product.description.toLowerCase().includes(value.toLowerCase()),
     );
+
+    // Aplicar filtro de tipo si está seleccionado
+    if (selectedType) {
+      filtered = filtered.filter((p) => p.type === selectedType);
+    }
 
     if (sortBy === 'price-asc') {
       filtered.sort((a, b) => a.price - b.price);
