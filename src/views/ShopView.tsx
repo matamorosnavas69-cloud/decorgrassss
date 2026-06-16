@@ -31,7 +31,7 @@ import { useState, useEffect } from 'react';
 import { useCart } from '../contexts/CartContext';
 import { CtaSection } from '../components/common/CtaSection';
 import { useWhatsApp } from '../hooks/useWhatsApp';
-import { productsData, productTypes, Product } from '../data/productsData';
+import { productsData, productTypes, productCategories, Product } from '../data/productsData';
 import curlyMuestras from '../assets/images/products/curly/curly-muestras-colores.jpeg';
 import curlyDecorativa from '../assets/images/products/curly/curly-decorativa-interior.jpeg';
 import curlyParque1 from '../assets/images/products/curly/curly-parque-infantil-1.jpeg';
